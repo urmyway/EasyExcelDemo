@@ -4,10 +4,8 @@ import com.alibaba.excel.read.metadata.ReadSheet;
 import entity.ConverterData;
 import entity.DemoData;
 import entity.SheetData;
-import listener.ConverterDataListener;
+import listener.*;
 import listener.DemoDataListener;
-import listener.DemoDataListener;
-import listener.SheetDataListener;
 import org.junit.Test;
 import util.TestFileUtil;
 
@@ -89,4 +87,22 @@ public class ReadTest{
                 .sheet().doRead();
     }
 
+    /**
+     * 读取表头数据
+     *
+     * <p>
+     * 1. 创建excel对应的实体对象 参照{@link DemoData}
+     * <p>
+     * 2. 由于默认一行行的读取excel，所以需要创建excel一行一行的回调监听器，参照{@link DemoHeadDataListener}
+     * <p>
+     * 3. 直接读即可
+     */
+    @Test
+    public void headerRead() {
+        String fileName = "D:\\test\\bb.xlsx";
+        System.out.println(fileName);
+
+        // 这里 需要指定读用哪个class去读，然后读取第一个sheet
+        EasyExcel.read(fileName, DemoData.class, new DemoHeadDataListener()).sheet().doRead();
+    }
 }
