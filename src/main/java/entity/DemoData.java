@@ -10,6 +10,7 @@ public class DemoData {
     /**
      * 强制读取第三个 这里不建议 index 和 name 同时用，要么一个对象只用index，要么一个对象只用name去匹配
      */
+    //如果没指定@ExcelProperty(index) 或者 名字匹配 字段默认按照顺序 @ExcelProperty(index) index = 0 、 1 、2 ...
     @ExcelProperty(index = 0)
     private String name;
     @ExcelProperty(index = 1)
