@@ -2,6 +2,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.enums.CellExtraTypeEnum;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import entity.CellDataReadDemoData;
 import entity.ConverterData;
 import entity.DemoData;
 import entity.SheetData;
@@ -71,8 +72,7 @@ public class ReadTest{
     /**
      * 日期、数字或者自定义格式转换
      * <p>
-     * 默认读的转换器{@link DefaultConverterLoader#loadDefaultReadConverter()}
-     * <p>1. 创建excel对应的实体对象 参照{@link ConverterData}.里面可以使用注解{@link DateTimeFormat}、{@link NumberFormat}或者自定义注解
+     * <p>1. 创建excel对应的实体对象 参照{@link ConverterData}.
      * <p>2. 由于默认一行行的读取excel，所以需要创建excel一行一行的回调监听器，参照{@link ConverterDataListener}
      * <p>3. 直接读即可
      */
@@ -130,5 +130,24 @@ public class ReadTest{
                 .extraRead(CellExtraTypeEnum.HYPERLINK)
                 // 需要读取合并单元格信息 默认不读取
                 .extraRead(CellExtraTypeEnum.MERGE).sheet().doRead();
+    }
+
+    /**
+     * 读取公式和单元格类型
+     *
+     * <p>
+     * 1. 创建excel对应的实体对象 参照{@link CellDataReadDemoData}
+     * <p>
+     * 2. 由于默认一行行的读取excel，所以需要创建excel一行一行的回调监听器，参照{@link DemoHeadDataListener}
+     * <p>
+     * 3. 直接读即可
+     *
+     * @since 2.2.0-beat1
+     */
+    @Test
+    public void cellDataRead() {
+        String fileName = "D:\\test\\cellDataDemo.xlsx";
+        // 这里 需要指定读用哪个class去读，然后读取第一个sheet
+        EasyExcel.read(fileName, CellDataReadDemoData.class, new DemoDataListener()).sheet().doRead();
     }
 }
