@@ -1,6 +1,7 @@
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
+import entity.ComplexHeadData;
 import entity.Demo;
 import entity.DemoData;
 import entity.IndexData;
@@ -88,5 +89,18 @@ public class WriteTest {
         String fileName = "D:\\test\\" + "indexWrite" + System.currentTimeMillis() + ".xlsx";
         // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
         EasyExcel.write(fileName, IndexData.class).sheet("模板").doWrite(data());
+    }
+
+    /**
+     * 复杂头写入
+     * <p>1. 创建excel对应的实体对象 参照{@link ComplexHeadData}
+     * <p>2. 使用{@link @ExcelProperty}注解指定复杂的头
+     * <p>3. 直接写即可
+     */
+    @Test
+    public void complexHeadWrite() {
+        String fileName = "D:\\test\\" + "complexHeadWrite" + System.currentTimeMillis() + ".xlsx";
+        // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+        EasyExcel.write(fileName, ComplexHeadData.class).sheet("模板").doWrite(data());
     }
 }
