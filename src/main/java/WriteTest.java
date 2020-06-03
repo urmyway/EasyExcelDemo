@@ -1,10 +1,14 @@
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.util.FileUtils;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import entity.*;
 import org.junit.Test;
 import util.TestFileUtil;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.*;
 
 public class WriteTest {
@@ -169,5 +173,38 @@ public class WriteTest {
         String fileName = "D:\\test\\" + "converterWrite" + System.currentTimeMillis() + ".xlsx";
         // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
         EasyExcel.write(fileName, ConverterData.class).sheet("模板").doWrite(data());
+    }
+
+    /**
+     * 图片导出
+     * <p>
+     * 1. 创建excel对应的实体对象 参照{@link ImageData}
+     * <p>
+     * 2. 直接写即可
+     */
+    @Test
+    public void imageWrite() throws Exception {
+        String fileName = "D:\\test\\" + "imageWrite" + System.currentTimeMillis() + ".xlsx";
+        // 如果使用流 记得关闭
+        InputStream inputStream = null;
+        try {
+            List<ImageData> list = new ArrayList<ImageData>();
+            ImageData imageData = new ImageData();
+            list.add(imageData);
+            String imagePath = "D:\\test\\img.jpg";
+            // 放入五种类型的图片 实际使用只要选一种即可
+            imageData.setByteArray(FileUtils.readFileToByteArray(new File(imagePath)));
+            imageData.setFile(new File(imagePath));
+            imageData.setString(imagePath);
+            inputStream = FileUtils.openInputStream(new File(imagePath));
+            imageData.setInputStream(inputStream);
+            imageData.setUrl(new URL(
+                    "https://raw.githubusercontent.com/alibaba/easyexcel/master/src/test/resources/converter/img.jpg"));
+            EasyExcel.write(fileName, ImageData.class).sheet().doWrite(list);
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+        }
     }
 }
