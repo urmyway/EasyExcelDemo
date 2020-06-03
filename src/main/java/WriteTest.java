@@ -36,6 +36,19 @@ public class WriteTest {
         return list;
     }
 
+    //不创建对象的写 List<List<Object>> 存储的每一个list相当于一个对象一行的数据
+    private List<List<Object>> dataList() {
+        List<List<Object>> list = new ArrayList<List<Object>>();
+        for (int i = 0; i < 10; i++) {
+            List<Object> data = new ArrayList<Object>();
+            data.add("字符串" + i);
+            data.add(new Date());
+            data.add(0.56);
+            list.add(data);
+        }
+        return list;
+    }
+
     /**
      * 最简单的写
      * <p>1. 创建excel对应的实体对象 参照{@link DemoData}
@@ -455,4 +468,30 @@ public class WriteTest {
         EasyExcel.write(fileName, Demo.class).inMemory(Boolean.TRUE).registerWriteHandler(new CommentWriteHandler())
                 .sheet("模板").doWrite(data());
     }
+
+    /**
+     * 不创建对象的写
+     */
+    @Test
+    public void noModelWrite() {
+        // 写法1
+        String fileName = "D:\\test\\" + "noModelWrite" + System.currentTimeMillis() + ".xlsx";
+        // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+        EasyExcel.write(fileName).head(head1()).sheet("模板").doWrite(dataList());
+    }
+
+    private List<List<String>> head1() {
+        List<List<String>> list = new ArrayList<List<String>>();
+        List<String> head0 = new ArrayList<String>();
+        head0.add("字符串" + System.currentTimeMillis());
+        List<String> head1 = new ArrayList<String>();
+        head1.add("数字" + System.currentTimeMillis());
+        List<String> head2 = new ArrayList<String>();
+        head2.add("日期" + System.currentTimeMillis());
+        list.add(head0);
+        list.add(head1);
+        list.add(head2);
+        return list;
+    }
+
 }
