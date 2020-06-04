@@ -1,5 +1,6 @@
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.enums.WriteDirectionEnum;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import entity.Demo;
@@ -153,5 +154,31 @@ public class FillTest {
         excelWriter.finish();
         // 总体上写法比较复杂 但是也没有想到好的版本 异步的去写入excel 不支持行的删除和移动，也不支持备注这种的写入，所以也排除了可以
         // 新建一个 然后一点点复制过来的方案，最后导致list需要新增行的时候，后面的列的数据没法后移，后续会继续想想解决方案
+    }
+
+    /**
+     * 横向的填充
+     *
+     * @since 2.1.1
+     */
+    @Test
+    public void horizontalFill() {
+        // 模板注意 用{} 来表示你要用的变量 如果本来就有"{","}" 特殊字符 用"\{","\}"代替
+        // {} 代表普通变量 {.} 代表是list的变量
+        String templateFileName ="D:\\test\\horizontal.xlsx";
+        String fileName = "D:\\test\\" + "horizontalFill" + System.currentTimeMillis() + ".xlsx";
+        ExcelWriter excelWriter = EasyExcel.write(fileName).withTemplate(templateFileName).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet().build();
+        //设置direction(WriteDirectionEnum.HORIZONTAL) 横向  默认纵向
+        FillConfig fillConfig = FillConfig.builder().direction(WriteDirectionEnum.HORIZONTAL).build();
+        excelWriter.fill(data(), fillConfig, writeSheet);
+        excelWriter.fill(data(), fillConfig, writeSheet);
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("date", "2019年10月9日13:28:28");
+        excelWriter.fill(map, writeSheet);
+
+        // 别忘记关闭流
+        excelWriter.finish();
     }
 }
