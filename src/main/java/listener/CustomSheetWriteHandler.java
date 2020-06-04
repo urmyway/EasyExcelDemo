@@ -33,6 +33,8 @@ public class CustomSheetWriteHandler implements SheetWriteHandler {
         DataValidationHelper helper = writeSheetHolder.getSheet().getDataValidationHelper();
         DataValidationConstraint constraint = helper.createExplicitListConstraint(new String[] {"测试1", "测试2"});
         DataValidation dataValidation = helper.createValidation(constraint, cellRangeAddressList);
+        dataValidation.createErrorBox("错误", "请按右侧下拉箭头选择!");
+        dataValidation.setShowErrorBox(true);
         writeSheetHolder.getSheet().addValidationData(dataValidation);
     }
 }
