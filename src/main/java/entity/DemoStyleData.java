@@ -32,7 +32,7 @@ public class DemoStyleData {
     // 字符串的内容的背景设置成天蓝 IndexedColors.SKY_BLUE.getIndex()
     @ContentStyle(fillPatternType = FillPatternType.SOLID_FOREGROUND, fillForegroundColor = 40)
     // 字符串的内容字体设置成20
-    @ContentFontStyle(fontHeightInPoints = 30)
+    @ContentFontStyle(fontHeightInPoints = 30,color = 2)
     @ExcelProperty("字符串标题")
     private String string;
     @ExcelProperty("日期标题")
